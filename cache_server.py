@@ -184,6 +184,35 @@ class CachingRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(f"Error: {str(e)}".encode())
 
+    def list_directory(self, path):
+        self.send_response(403)
+        self.end_headers()
+        return None
+
+
+    def serve_index_html(self):
+        try:
+            index_path = Path(__file__).parent / "index.html"
+
+            if not index_path.exists():
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(b"index.html not found")
+                return
+
+            content = index_path.read_bytes()
+
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", len(content))
+            self.end_headers()
+            self.wfile.write(content)
+
+        except Exception as e:
+            self.send_response(500)
+            self.end_headers()
+            self.wfile.write(str(e).encode())
+
     def do_GET(self):
         """Route requests to appropriate handlers"""
 
@@ -229,8 +258,12 @@ class CachingRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_config()
 
         else:
-            # Serve static files
-            super().do_GET()
+            # Only serve index.html at root
+            if self.path in ("/", "/index.html"):
+                self.serve_index_html()
+            else:
+                self.send_response(404)
+                self.end_headers()
 
     def handle_config(self):
         """Return configuration including API keys for frontend"""
