@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  cabin-dashboard:
+    build: .
+    container_name: cabin-dashboard
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - OWM_API_KEY=${OWM_API_KEY}
+      - UDOT_API_KEY=${UDOT_API_KEY}
+      - SENTINEL_HUB_CONFIG_ID=${SENTINEL_HUB_CONFIG_ID}
+    volumes:
+      # Optional: persist cache data
+      - cabin_cache:/app/cache
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  cabin_cache:
