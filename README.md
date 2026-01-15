@@ -80,13 +80,13 @@ A full-stack web dashboard for monitoring real-time weather, terrain, and road c
 python3 cache_server.py --port 8080 --cache-dir ./cache
 ```
 
-Then open `cabin_dashboard_v2.html` in your browser.
+Then open `index.html` in your browser.
 
 ## Project Structure
 
 ```
 Cabin-Dashboard/
-├── cabin_dashboard_v2.html   # Frontend single-page application
+├── index.html   # Frontend single-page application
 ├── cache_server.py           # Backend caching proxy server
 ├── docker-compose.yml        # Docker Compose configuration
 ├── Dockerfile                # Docker image definition

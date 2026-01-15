@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir requests
 
 # Copy application files
 COPY cache_server.py .
-COPY cabin_dashboard_v2.html .
+COPY index.html .
 
 # Expose the server port
 EXPOSE 8080
