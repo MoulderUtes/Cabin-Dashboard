@@ -1,0 +1,11 @@
+# Cabin Dashboard API Keys
+# ========================
+
+# OpenWeatherMap API Key
+OWM_API_KEY=c283ba233941b4470b06ae22c32b42cd
+
+# UDOT Traffic API Key
+UDOT_API_KEY=3523fb5d7e304be0aa44214f7a78fd31
+
+# Sentinel Hub Configuration ID
+SENTINEL_HUB_CONFIG_ID=cae89b0f-f841-4354-9143-c3e91fcf51cb

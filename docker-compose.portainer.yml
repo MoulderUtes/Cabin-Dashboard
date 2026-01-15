@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  cabin-dashboard:
+    image: ghcr.io/moulderutes/cabin-dashboard:main
+    container_name: cabin-dashboard
+    restart: unless-stopped
+    environment:
+      - OWM_API_KEY=c283ba233941b4470b06ae22c32b42cd
+      - UDOT_API_KEY=3523fb5d7e304be0aa44214f7a78fd31
+      - SENTINEL_HUB_CONFIG_ID=cae89b0f-f841-4354-9143-c3e91fcf51cb
+    volumes:
+      - cabin_cache:/app/cache
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      container-ipvlan:
+        ipv4_address: 192.168.0.34
+
+networks:
+  container-ipvlan:
+    external: true
+
+volumes:
+  cabin_cache:
