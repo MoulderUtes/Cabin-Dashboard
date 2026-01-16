@@ -73,7 +73,7 @@
 
         .quick-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
             gap: 12px;
         }
 
@@ -171,7 +171,7 @@
         /* Weather Section Styles */
         .weather-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
             gap: 15px;
         }
 
@@ -209,7 +209,7 @@
         /* Forecast Cards */
         .forecast-cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
             gap: 10px;
         }
 
@@ -325,7 +325,7 @@
 
         .hourly-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(min(120px, 100%), 1fr));
             gap: 10px;
         }
 
@@ -375,7 +375,7 @@
         /* Soil Data Section */
         .soil-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
             gap: 15px;
         }
 
@@ -415,7 +415,7 @@
         /* Soil Chart Containers */
         .soil-chart-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
             gap: 20px;
         }
 
@@ -487,6 +487,210 @@
         .status-error {
             background: #ff6b6b;
         }
+
+        /* ========== MOBILE RESPONSIVE STYLES ========== */
+
+        /* Large tablets / small laptops (1024px and below) */
+        @media screen and (max-width: 1024px) {
+            /* Chart containers - allow better flow */
+            .soil-chart-container {
+                grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
+            }
+
+            /* Camera grid adjusts proportionally */
+            #camera-grid {
+                grid-template-columns: 1.5fr 1fr !important;
+            }
+
+            #map {
+                height: 450px !important;
+            }
+        }
+
+        /* Tablet and below (768px) */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            /* Camera grid - stack vertically on mobile */
+            #camera-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            #camera-iframe {
+                height: 280px !important;
+            }
+
+            /* Map controls - wrap better on mobile */
+            .map-controls {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 10px !important;
+            }
+
+            .map-control-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .map-control-group select {
+                flex: 1;
+                min-width: 150px;
+            }
+
+            /* Map height reduction for mobile */
+            #map {
+                height: 350px !important;
+            }
+
+            /* Chart containers - single column on mobile */
+            .soil-chart-container {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Chart boxes - ensure they fit screen */
+            .chart-box {
+                min-width: 0;
+                overflow: hidden;
+            }
+
+            .chart-wrapper {
+                height: 250px;
+                min-width: 0;
+            }
+
+            /* Forecast cards - 2 per row on tablet */
+            .forecast-cards-container {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            /* Quick stats - 2 per row */
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            /* Modal adjustments */
+            .modal-content {
+                width: 95%;
+                max-height: 90vh;
+            }
+
+            .modal-header {
+                padding: 15px;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            /* Footer grid - single column */
+            footer div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        /* Phone screens (480px and below) */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                padding: 10px;
+                border-radius: 5px;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
+
+            .header-info {
+                font-size: 10px;
+            }
+
+            .section {
+                padding: 12px;
+            }
+
+            .section h3 {
+                font-size: 16px;
+            }
+
+            /* Camera section */
+            #camera-iframe {
+                height: 220px !important;
+            }
+
+            #camera-name {
+                font-size: 14px !important;
+            }
+
+            #camera-weather-panel {
+                padding: 10px !important;
+            }
+
+            /* Map even smaller on phones */
+            #map {
+                height: 280px !important;
+            }
+
+            /* Forecast cards - single column on phones */
+            .forecast-cards-container {
+                grid-template-columns: 1fr !important;
+            }
+
+            .forecast-day-card {
+                padding: 12px;
+            }
+
+            /* Quick stats - single column on smallest screens */
+            .quick-stats {
+                grid-template-columns: 1fr !important;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            /* Chart wrapper smaller on phones */
+            .chart-wrapper {
+                height: 200px;
+            }
+
+            /* Selects full width */
+            select {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+
+            /* Button adjustments */
+            button {
+                width: 100%;
+                margin-left: 0 !important;
+                margin-top: 8px;
+            }
+        }
+
+        /* Ensure charts don't overflow their containers */
+        canvas {
+            max-width: 100% !important;
+        }
+
+        /* Fix inline styles that may cause overflow */
+        .chart-box[style*="grid-column: 1 / -1"] {
+            min-width: 0;
+        }
     </style>
 </head>
 <body>
@@ -507,8 +711,8 @@
         <!-- Maps Section -->
         <div class="section">
             <h3>🗺️ Interactive Map</h3>
-            <div style="margin-bottom: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
-                <div>
+            <div class="map-controls" style="margin-bottom: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
+                <div class="map-control-group">
                     <label for="background-layer-select" style="color: #c8bfa8; margin-right: 10px; font-size: 12px;">Background:</label>
                     <select id="background-layer-select" onchange="updateBackgroundLayer()" style="padding: 5px; background: #3a332d; color: #e8e6e3; border: 1px solid #5a4d47; border-radius: 4px;">
                         <option value="TRUE_COLOR_MOST_RECENT">Sentinel-2 Most Recent RGB</option>
@@ -521,7 +725,7 @@
                     </select>
                     <button onclick="centerOnCabin()" style="margin-left: 10px; padding: 5px 10px; background: #5a4d47; color: #e8e6e3; border: 1px solid #7a6d67; border-radius: 4px; cursor: pointer;">Center on Cabin</button>
                 </div>
-                <div style="display: flex; gap: 15px; align-items: center;">
+                <div class="map-control-group" style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
                     <label for="overlay-layer-select" style="color: #c8bfa8; margin-right: 10px; font-size: 12px;">Overlay:</label>
                     <select id="overlay-layer-select" onchange="updateOverlayLayer()" style="padding: 5px; background: #3a332d; color: #e8e6e3; border: 1px solid #5a4d47; border-radius: 4px;">
                         <option value="NONE">None</option>
