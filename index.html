@@ -448,12 +448,49 @@
             display: block;
         }
 
-        /* Camera iframe wrapper - allows scaling and zoom on mobile */
+        /* Camera iframe wrapper */
         .camera-iframe-wrapper {
-            overflow: auto;
+            overflow: hidden;
             border-radius: 4px;
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-            touch-action: pan-x pan-y pinch-zoom; /* Allow pinch zoom */
+        }
+
+        /* Camera thumbnail for mobile - hidden on desktop */
+        .camera-thumbnail {
+            display: none;
+        }
+
+        /* Camera modal - fullscreen on mobile */
+        #cameraModal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            flex-direction: column;
+        }
+
+        #cameraModal .modal-header {
+            flex-shrink: 0;
+            background: #1a1410;
+            border-bottom: 1px solid #4a433d;
+        }
+
+        #cameraModal .modal-body {
+            flex: 1;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #cameraModal iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         /* Footer */
@@ -534,21 +571,48 @@
                 grid-template-columns: 1fr !important;
             }
 
-            /* Camera iframe wrapper - scrollable container on mobile */
+            /* Hide full iframe on mobile, show thumbnail instead */
             .camera-iframe-wrapper {
-                position: relative;
-                width: 100%;
-                height: 300px;
-                border-radius: 4px;
-                overflow: auto;
-                -webkit-overflow-scrolling: touch;
+                display: none;
             }
 
-            #camera-iframe {
-                width: 640px !important;  /* Fixed width for camera feed */
-                height: 480px !important; /* Fixed height for camera feed */
-                min-width: 640px;
-                border: 1px solid #5a4d47 !important;
+            .camera-thumbnail {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 180px;
+                background: linear-gradient(135deg, #2a2420 0%, #1a1410 100%);
+                border: 2px dashed #5a4d47;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .camera-thumbnail:hover,
+            .camera-thumbnail:active {
+                border-color: #6b9d59;
+                background: linear-gradient(135deg, #3a332d 0%, #2a2420 100%);
+            }
+
+            .camera-thumbnail-content {
+                text-align: center;
+                color: #c8bfa8;
+            }
+
+            .camera-thumbnail-icon {
+                font-size: 48px;
+                margin-bottom: 10px;
+            }
+
+            .camera-thumbnail-text {
+                font-size: 14px;
+                color: #a69880;
+            }
+
+            /* Camera modal fullscreen on mobile */
+            #cameraModal.show {
+                display: flex;
             }
 
             /* Map controls - wrap better on mobile */
@@ -648,9 +712,17 @@
                 font-size: 16px;
             }
 
-            /* Camera section - scrollable on phones */
-            .camera-iframe-wrapper {
-                height: 250px;
+            /* Camera thumbnail smaller on phones */
+            .camera-thumbnail {
+                height: 150px;
+            }
+
+            .camera-thumbnail-icon {
+                font-size: 36px;
+            }
+
+            .camera-thumbnail-text {
+                font-size: 12px;
             }
 
             #camera-name {
@@ -779,9 +851,19 @@
                 <!-- Camera Feed -->
                 <div>
                     <div id="camera-name" style="color: #d4c5a9; margin-bottom: 10px; font-weight: bold;">No camera selected</div>
+
+                    <!-- Desktop: Full iframe -->
                     <div class="camera-iframe-wrapper">
                         <iframe id="camera-iframe" src="about:blank"
                                 style="width: 100%; height: 400px; border: 1px solid #5a4d47; border-radius: 4px; background: #000;"></iframe>
+                    </div>
+
+                    <!-- Mobile: Thumbnail that opens modal -->
+                    <div class="camera-thumbnail" onclick="openCameraModal()">
+                        <div class="camera-thumbnail-content">
+                            <div class="camera-thumbnail-icon">📹</div>
+                            <div class="camera-thumbnail-text">Tap to view camera feed</div>
+                        </div>
                     </div>
                 </div>
 
@@ -835,6 +917,17 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Camera Modal Popup (Mobile) -->
+        <div id="cameraModal">
+            <div class="modal-header">
+                <h3 id="cameraModalName" style="color: #d4c5a9;">Camera Feed</h3>
+                <span class="modal-close" onclick="closeCameraModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <iframe id="camera-modal-iframe" src="about:blank"></iframe>
             </div>
         </div>
 
@@ -1841,11 +1934,37 @@
             document.getElementById('hourlyModal').style.display = 'none';
         }
 
+        // Camera modal functions (for mobile)
+        function openCameraModal() {
+            const cameraIframe = document.getElementById('camera-iframe');
+            const modalIframe = document.getElementById('camera-modal-iframe');
+            const cameraName = document.getElementById('camera-name').textContent;
+
+            // Copy the current camera URL to the modal iframe
+            modalIframe.src = cameraIframe.src;
+            document.getElementById('cameraModalName').textContent = cameraName;
+            document.getElementById('cameraModal').classList.add('show');
+
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCameraModal() {
+            document.getElementById('cameraModal').classList.remove('show');
+            document.getElementById('camera-modal-iframe').src = 'about:blank';
+            document.body.style.overflow = '';
+        }
+
         // Close modal when clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('hourlyModal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
+            const hourlyModal = document.getElementById('hourlyModal');
+            const cameraModal = document.getElementById('cameraModal');
+
+            if (event.target === hourlyModal) {
+                hourlyModal.style.display = 'none';
+            }
+            if (event.target === cameraModal) {
+                closeCameraModal();
             }
         }
 
