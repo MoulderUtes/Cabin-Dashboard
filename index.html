@@ -2369,10 +2369,12 @@
             const datasets = [];
             const colors = ['#4a9eff', '#ff9500', '#34c759'];
 
-            // Calculate date range
+            // Calculate date range - extend to end of today to ensure current data is visible
             const today = new Date();
+            today.setHours(23, 59, 59, 999);  // End of today
             const sevenDaysAgo = new Date();
-            sevenDaysAgo.setDate(today.getDate() - 7);
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            sevenDaysAgo.setHours(0, 0, 0, 0);  // Start of 7 days ago
 
             moistureData.forEach((dataset, idx) => {
                 const depth = Math.abs(dataset.stationElement.heightDepth);
@@ -2485,10 +2487,12 @@
             const datasets = [];
             const colors = ['#ff6b6b', '#ffa500', '#4ecdc4'];
 
-            // Calculate date range
+            // Calculate date range - extend to end of today to ensure current data is visible
             const today = new Date();
+            today.setHours(23, 59, 59, 999);  // End of today
             const sevenDaysAgo = new Date();
-            sevenDaysAgo.setDate(today.getDate() - 7);
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            sevenDaysAgo.setHours(0, 0, 0, 0);  // Start of 7 days ago
 
             tempData.forEach((dataset, idx) => {
                 const depth = Math.abs(dataset.stationElement.heightDepth);

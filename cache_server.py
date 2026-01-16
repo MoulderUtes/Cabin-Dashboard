@@ -353,7 +353,7 @@ class CachingRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_json_response(data, status, is_cached)
 
     def handle_snotel(self):
-        """USDA SNOTEL proxy with caching"""
+        """USDA SNOTEL proxy with caching - uses HOURLY for more current data"""
         print(f"❄️  USDA SNOTEL request")
 
         today = datetime.now().date()
@@ -363,7 +363,7 @@ class CachingRequestHandler(http.server.SimpleHTTPRequestHandler):
             f'stationTriplets=1097:UT:SNTL'
             f'&elements=SNWD,TOBS,PREC,WTEQ,TAVG,TMAX,TMIN'
             f'&ordinal=1'
-            f'&duration=DAILY'
+            f'&duration=HOURLY'
             f'&getFlags=false'
             f'&beginDate={seven_days_ago}'
             f'&endDate={today}'
@@ -374,7 +374,7 @@ class CachingRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_json_response(data, status, is_cached)
 
     def handle_soil(self):
-        """USDA Soil Data proxy with caching"""
+        """USDA Soil Data proxy with caching - uses HOURLY for more current data"""
         print(f"🌱 USDA Soil Data request")
 
         today = datetime.now().date()
@@ -384,7 +384,7 @@ class CachingRequestHandler(http.server.SimpleHTTPRequestHandler):
             f'stationTriplets=1097:UT:SNTL'
             f'&elements=SMS:-2,SMS:-8,SMS:-20,STO:-2,STO:-8,STO:-20'
             f'&ordinal=1'
-            f'&duration=DAILY'
+            f'&duration=HOURLY'
             f'&getFlags=false'
             f'&beginDate={seven_days_ago}'
             f'&endDate={today}'
