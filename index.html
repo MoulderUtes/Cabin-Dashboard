@@ -1933,6 +1933,7 @@
                             latitude: cam.Latitude,
                             longitude: cam.Longitude,
                             location: cam.Location,
+                            name: cam.Location || `${cam.Roadway || 'Unknown'} - ${cam.Direction || 'Unknown'}`,
                             url: firstView ? firstView.Url : null,
                             status: firstView ? firstView.Status : 'Disabled'
                         };
